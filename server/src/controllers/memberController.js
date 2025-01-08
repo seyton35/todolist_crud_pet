@@ -11,7 +11,7 @@ class MemberController {
     loginMember = async (req, res) => {
         const { query: { password, email } } = req
         if (!email || !password) {
-            return res.status(400).send({
+            return res.status(401).send({
                 status: 'Failed',
                 message: 'incorrect login or password',
             })
@@ -35,11 +35,6 @@ class MemberController {
 
     createMember = async (req, res) => {
         try {
-            // const errors = validationResult(req)
-            // if (!errors.isEmpty()) return res.status(400).send({
-            //     status: 'Failed',
-            //     message: errors
-            // })
             const { query: { password, email, name, } } = req
             if (!email || !password || !name) return res.status(400).send({
                 status: 'Failed',

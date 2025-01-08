@@ -54,7 +54,7 @@ class Member {
             const sql = 'SELECT * FROM users WHERE email = ?;'
             const res = await this.#DB.query(sql, memberEmail)
             if (res[0][0]) throw {
-                status: 400,
+                status: 409,
                 message: `The email "${memberEmail}" is already in use`
             }
             const salt = await genSalt(10)

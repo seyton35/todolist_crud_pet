@@ -18,7 +18,22 @@ class Todo {
 
     createTodo = async (userId, todo) => {
         try {
+            let res = await this.#DB.query('SELECT 1 FROM users WHERE id_user = ?;', userId)
+            const user = res[0][0]
+            if (!user) {
+                throw {
+                    status: 404,
+                    message: `the user with 'id_user': '${userId}' doesent exist`
+                }
+            }
             let sql = 'INSERT INTO `todos` (id_todo, id_user, task, status ,description, deadline, created_at) VALUES (?,?,?,?,?,?,?);'
+            if (!todo.created_at) {
+                const date = new Date()
+                let created_at = date.toJSON()
+                created_at = created_at.replace('T', ' ')
+                created_at = created_at.substring(0, 19)
+                todo.created_at = created_at
+            }
             await this.#DB.query(sql, [
                 todo.id_todo,
                 userId,
@@ -26,10 +41,10 @@ class Todo {
                 todo.status,
                 todo.description || null,
                 todo.deadline || null,
-                todo.created_at || Date.now(),
+                todo.created_at,
             ])
             sql = 'SELECT * FROM `todos` WHERE `id_todo` = ' + `'${todo.id_todo}';`
-            const res = await this.#DB.query(sql)
+            res = await this.#DB.query(sql)
             const createdTodo = res[0][0]
             return createdTodo
         } catch (error) {
@@ -65,7 +80,7 @@ class Todo {
             let result = await this.#DB.query(getTodoByID)
             const todo = result[0][0]
             if (!todo) throw {
-                status: 400,
+                status: 404,
                 message: `todo with id "${todoId}" not found`
             }
             const sql = 'UPDATE todos SET ? WHERE id_todo = "' + todoId + '";'
@@ -74,7 +89,6 @@ class Todo {
             const updatedTodo = result[0][0]
             return updatedTodo
         } catch (error) {
-            console.log(error);
             throw {
                 status: error?.status || 500,
                 message: error?.message || error,

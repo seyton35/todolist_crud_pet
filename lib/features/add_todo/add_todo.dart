@@ -39,18 +39,18 @@ class FormWidget extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(8),
       children: const [
-        TaskFieldItem(),
-        StatusSwitchItem(),
-        DeadlinePickItem(),
-        DescriptionFieldItem(),
-        ButtonsBarItem()
+        _TaskFieldItem(),
+        _StatusSwitchItem(),
+        _DeadlinePickItem(),
+        _DescriptionFieldItem(),
+        _ButtonsBarItem()
       ],
     );
   }
 }
 
-class TaskFieldItem extends StatelessWidget {
-  const TaskFieldItem({super.key});
+class _TaskFieldItem extends StatelessWidget {
+  const _TaskFieldItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,30 +61,26 @@ class TaskFieldItem extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15)),
           color: Colors.white,
         ),
-        child: Column(
-          children: [
-            TextField(
-              onChanged: (_) => {context.read<AddTodoModel>().onTaskChange()},
-              controller: context.read<AddTodoModel>().taskTextController,
-              maxLength: 100,
-              decoration: InputDecoration(
-                hintText: 'Task',
-                labelText: 'Task',
-                errorText: context.watch<AddTodoModel>().errorTask,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
+        child: TextField(
+          onChanged: (_) => {context.read<AddTodoModel>().onTaskChange()},
+          controller: context.read<AddTodoModel>().taskTextController,
+          maxLength: 100,
+          decoration: InputDecoration(
+            hintText: 'Task',
+            labelText: 'Task',
+            errorText: context.watch<AddTodoModel>().errorTask,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class StatusSwitchItem extends StatelessWidget {
-  const StatusSwitchItem({super.key});
+class _StatusSwitchItem extends StatelessWidget {
+  const _StatusSwitchItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +109,8 @@ class StatusSwitchItem extends StatelessWidget {
   }
 }
 
-class DeadlinePickItem extends StatelessWidget {
-  const DeadlinePickItem({super.key});
+class _DeadlinePickItem extends StatelessWidget {
+  const _DeadlinePickItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +128,6 @@ class DeadlinePickItem extends StatelessWidget {
           lastDate: DateTime(2030, 1, 1, 1),
           initialDate: DateTime(now.year, now.month, now.day + 1),
         );
-        print(date);
         if (date == null) return;
         onDeadlineChange(date);
       },
@@ -167,8 +162,8 @@ class DeadlinePickItem extends StatelessWidget {
   }
 }
 
-class DescriptionFieldItem extends StatelessWidget {
-  const DescriptionFieldItem({super.key});
+class _DescriptionFieldItem extends StatelessWidget {
+  const _DescriptionFieldItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -202,8 +197,8 @@ class DescriptionFieldItem extends StatelessWidget {
   }
 }
 
-class ButtonsBarItem extends StatelessWidget {
-  const ButtonsBarItem({
+class _ButtonsBarItem extends StatelessWidget {
+  const _ButtonsBarItem({
     super.key,
   });
 

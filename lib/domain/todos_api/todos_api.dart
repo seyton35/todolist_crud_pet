@@ -2,18 +2,34 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todos_crud_pet/domain/models/models.dart';
 
-enum ApiClientExeptionType { network, apiKey, other, emptyResponse }
-
-class ApiClientExeption implements Exception {
-  final ApiClientExeptionType type;
-
-  ApiClientExeption(this.type);
-}
+enum ApiClientExeptionType { network, apiKey, emptyResponse, other }
 
 class TodosApi {
   final Dio _client = Dio();
   final _host = dotenv.env['HOST'] ?? '';
   late final _todosHost = '${_host}todos/';
+
+  TodosApi() {
+    _client.interceptors.add(InterceptorsWrapper(
+      onError: (error, handler) {
+        if (error.type == DioExceptionType.connectionTimeout) {
+          throw ApiClientExeptionType.network;
+        }
+        if (error.response == null) throw error;
+        if (error.response!.statusCode == null) throw error;
+        switch (error.response!.statusCode) {
+          case 401:
+            throw ApiClientExeptionType.emptyResponse;
+          case 409:
+            throw ApiClientExeptionType.apiKey;
+          case 400:
+          case 500:
+          default:
+            throw ApiClientExeptionType.other;
+        }
+      },
+    ));
+  }
 
   Future<dynamic> getTodos(
       {required String jwt, required int page, required int limit}) async {
@@ -31,8 +47,11 @@ class TodosApi {
           .map((dynamic element) => {todoList.add(Todo.fromJson(element))})
           .toList();
       return {'todo_list': todoList, 'total_pages': totalPages};
+    } on DioException catch (e) {
+      print(' ssss');
     } catch (e) {
       print(e);
+      print(' ssss');
       return [];
     }
   }
@@ -47,14 +66,13 @@ class TodosApi {
           options: Options(headers: {'Authorization': 'Bearer $jwt'}),
           queryParameters: {
             'id_todo': todoId,
-            'status': status,
+            'status': '',
           });
       final rawTodo = res.data['data'];
       final todo = Todo.fromJson(rawTodo);
       return todo;
     } catch (e) {
       print(e);
-      return null;
     }
   }
 
@@ -72,7 +90,10 @@ class TodosApi {
       final updatedTodo = Todo.fromJson(res.data['data']);
       return updatedTodo;
     } catch (e) {
+      print('\n');
+      print('n');
       print(e);
+      print('\n');
       return null;
     }
   }

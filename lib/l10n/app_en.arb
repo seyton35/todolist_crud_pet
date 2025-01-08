@@ -1,0 +1,42 @@
+{
+    "todoList": "Todo list",
+    "@todoList": {
+        "description": "список заметок"
+    },
+    "byTitleASC": "title ↓",
+    "@byTitleASC": {
+        "description": "sorting type"
+    },
+    "bytitleDESC": "title ↑",
+    "@bytitleDESC": {
+        "description": "sorting type"
+    },
+    "createdAtASC": "creation date ↓",
+    "@createdAtASC": {
+        "description": "sorting type"
+    },
+    "createdAtDESC": "creation date ↑",
+    "@createdAtDESC": {
+        "description": "sorting type"
+    },
+    "completed": "completed ↓",
+    "@completed": {
+        "description": "sorting type"
+    },
+    "uncompleted": "completed ↑",
+    "@uncompleted": {
+        "description": "sorting type"
+    },
+    "archivedTodos": "archived todos",
+    "@archivedTodos": {
+        "description": "drawer tab"
+    },
+    "logOut": "log out",
+    "@logOut": {
+        "description": "drawer tab"
+    },
+    "makeUntil": "make until",
+    "@makeUntil": {
+        "description": "todoCard description"
+    }
+}

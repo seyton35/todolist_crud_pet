@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todos_crud_pet/features/app/app_model.dart';
 import 'package:todos_crud_pet/features/todo_list/models/models.dart';
 import 'package:todos_crud_pet/features/todo_list/todo_list_model.dart';
+import 'package:todos_crud_pet/l10n/app_localizations.dart';
 
 class TodoList extends StatelessWidget {
   const TodoList({super.key});
@@ -23,7 +24,7 @@ class TodoList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('todos'),
+        title: Text(AppLocalizations.of(context)!.todoList),
         backgroundColor: Colors.amber,
         actions: const [
           _SortDropdown(),
@@ -53,14 +54,37 @@ class _SortDropdown extends StatelessWidget {
       value: context.watch<TodoListModel>().sortMethod,
       onChanged: (value) =>
           context.read<TodoListModel>().onSortMethodChange(value!),
-      items: SortBy.values
-          .map(
-            (sort) => DropdownMenuItem<SortBy>(
-              value: sort,
-              child: Text(sort.name),
-            ),
-          )
-          .toList(),
+      items: SortBy.values.map(
+        (sort) {
+          late final String btnTitle;
+          final l10n = AppLocalizations.of(context)!;
+          switch (sort) {
+            case SortBy.byTitleASC:
+              btnTitle = l10n.byTitleASC;
+              break;
+            case SortBy.byTitleDESC:
+              btnTitle = l10n.bytitleDESC;
+              break;
+            case SortBy.completed:
+              btnTitle = l10n.completed;
+              break;
+            case SortBy.uncompleted:
+              btnTitle = l10n.uncompleted;
+              break;
+            case SortBy.createdAtASC:
+              btnTitle = l10n.createdAtASC;
+              break;
+            case SortBy.createdAtDESC:
+              btnTitle = l10n.createdAtDESC;
+              break;
+            default:
+          }
+          return DropdownMenuItem<SortBy>(
+            value: sort,
+            child: Text(btnTitle),
+          );
+        },
+      ).toList(),
     );
   }
 }
@@ -77,16 +101,17 @@ class _DrawwerWidget extends StatelessWidget {
             onTap: () => context
                 .read<TodoListModel>()
                 .onDrawerTileTap(DrawerTileNames.archive),
-            child: const ListTile(
+            child: ListTile(
                 leading: Icon(Icons.archive_outlined),
-                title: Text('archived todos')),
+                title: Text(AppLocalizations.of(context)!.archivedTodos)),
           ),
           InkWell(
             onTap: () => context
                 .read<TodoListModel>()
                 .onDrawerTileTap(DrawerTileNames.logout),
-            child: const ListTile(
-                leading: Icon(Icons.logout), title: Text('log out')),
+            child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text(AppLocalizations.of(context)!.logOut)),
           ),
         ],
       ),
@@ -162,8 +187,8 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showDescription =
-        context.watch<TodoListModel>().openedDescriptionAt == todoCard.id;
+    final focusedItemId = context.watch<TodoListModel>().openedDescriptionAt;
+    final showDescription = focusedItemId == todoCard.id;
     String? description;
     if (todoCard.description != null) {
       if (showDescription) {
@@ -184,15 +209,16 @@ class CardWidget extends StatelessWidget {
         child: ListTile(
           title: Text(todoCard.title),
           trailing: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                children: [
-                  if (todoCard.date != null)
+              if (todoCard.date != null)
+                Column(
+                  children: [
+                    Text(AppLocalizations.of(context)!.makeUntil),
                     Text(DateFormat('dd M yyyy').format(todoCard.date!)),
-                  Text(DateFormat('dd M yyyy').format(todoCard.createdAt)),
-                ],
-              ),
+                  ],
+                ),
               Checkbox(
                 value: todoCard.isChecked,
                 onChanged: (_) =>

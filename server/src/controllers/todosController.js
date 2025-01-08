@@ -58,11 +58,11 @@ class TodoController {
     updateTodo = async (req, res) => {
         try {
             const { query: { id_todo, task, deadline, description, status } } = req
-            if (!id_todo) return res.status(300).send({
+            if (!id_todo) return res.status(400).send({
                 status: 'Failed',
                 message: "Parameter 'id_todo' can not be empty"
             })
-            if (!task && !deadline && !description && !status) return res.status(300).send({
+            if (!task && !deadline && !description && !status) return res.status(400).send({
                 status: 'Failed',
                 message: 'At least one of parameters: `task`, `status`, `deadline`, `description` must be not empty'
             })

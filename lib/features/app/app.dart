@@ -5,6 +5,8 @@ import 'package:todos_crud_pet/domain/auth_repository/auth_repository.dart';
 import 'package:todos_crud_pet/domain/main_navigation/main_navigation.dart';
 import 'package:todos_crud_pet/domain/todo_repository/todo_repository.dart';
 import 'package:todos_crud_pet/features/app/app_model.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:todos_crud_pet/l10n/app_localizations.dart';
 
 class MainApp extends StatelessWidget {
   final bool isAuthorized;
@@ -31,6 +33,26 @@ class MainApp extends StatelessWidget {
     final mainNavigation = MainNavigation();
 
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate, // Добавьте делегата локализации
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ru'),
+      ],
+      locale: const Locale('ru'),
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode &&
+              supportedLocale.countryCode == locale?.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       routes: mainNavigation.routes,
       initialRoute: mainNavigation.initialRoute(isAuthorized: isAuthorized),
       onGenerateRoute: mainNavigation.onGeneratedRoute,

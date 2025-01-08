@@ -1,0 +1,4 @@
+arb-dir: lib/l10n # Путь к директории с ARB файлами
+template-arb-file: app_ru.arb # Имя файла шаблона (обычно английский)
+output-localization-file: app_localizations.dart # Имя генерируемого файла
+synthetic-package: false

@@ -1,0 +1,42 @@
+{
+    "todoList": "Заметки",
+    "@todoList": {
+        "description": "список заметок"
+    },
+    "byTitleASC": "по алфавиту ↓",
+    "@byTitleASC": {
+        "description": "sorting type"
+    },
+    "bytitleDESC": "по алфавиту ↑",
+    "@bytitleDESC": {
+        "description": "sorting type"
+    },
+    "createdAtASC": "дата создания ↓",
+    "@createdAtASC": {
+        "description": "sorting type"
+    },
+    "createdAtDESC": "дата создания ↑",
+    "@createdAtDESC": {
+        "description": "sorting type"
+    },
+    "completed": "выполненые ↓",
+    "@completed": {
+        "description": "sorting type"
+    },
+    "uncompleted": "выполненые ↑",
+    "@uncompleted": {
+        "description": "sorting type"
+    },
+    "archivedTodos": "архив заметок",
+    "@archivedTodos": {
+        "description": "drawer tab"
+    },
+    "logOut": "выход",
+    "@logOut": {
+        "description": "drawer tab"
+    },
+    "makeUntil": "сделать до",
+    "@makeUntil": {
+        "description": "todoCard description"
+    }
+}

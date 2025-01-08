@@ -7,7 +7,7 @@ class AuthApi {
   final Dio _client = Dio();
   final _host = dotenv.env['HOST'] ?? '';
 
-  AuthApi();
+  AuthApi() {}
 
   late final _authHost = '${_host}members/';
 
